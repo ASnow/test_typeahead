@@ -1,44 +1,46 @@
 /// <reference path="../../typings/tsd.d.ts" />
 
 import * as React from 'react';
-import { ITypeaheadItem } from './typeahead.model';
+import { IItemRenderable } from './typeahead.model';
 
 
-interface ITypeaheadSelectable {
-  onSelect: (item: ITypeaheadItem) => void;
+interface ITypeaheadSelectable<Item> {
+  onSelect: (item: Item) => void;
 }
 
-interface ITypeaheadListProps extends ITypeaheadSelectable {
-  list: ITypeaheadItem[];
+interface ITypeaheadListProps<Item> extends ITypeaheadSelectable<Item>, IItemRenderable<Item> {
+  list: Item[];
 }
-interface ITypeaheadListItemProps extends ITypeaheadSelectable {
-  item: ITypeaheadItem;
+interface ITypeaheadListItemProps<Item> extends ITypeaheadSelectable<Item>, IItemRenderable<Item> {
+  item: Item;
+  key: number;
 }
 
-class TypeaheadListItem extends React.Component<ITypeaheadListItemProps, void> {
+class TypeaheadListItem<Item> extends React.Component<ITypeaheadListItemProps<Item>, void> {
   protected handleClick = () => {
     this.props.onSelect(this.props.item);
   }
 
   public render(): React.ReactElement<{}> {
+    const { itemRender, item }: any = this.props;
+
     return (
-      <li>
-        <a onClick={this.handleClick}>
-          {this.props.item.label}
-        </a>
+      <li className='typeahead__list-item' onClick={this.handleClick}>
+        {itemRender(item)}
       </li>
     );
   }
 }
 
-export class TypeaheadList extends React.Component<ITypeaheadListProps, void> {
-  public render(): React.ReactElement<{}> {
+export class TypeaheadList<Item> extends React.Component<ITypeaheadListProps<Item>, void> {
+  public render(): React.ReactElement<any> {
+    const ListItem: new () => TypeaheadListItem<Item> = TypeaheadListItem as any;
+    const { list, onSelect, itemRender }: any = this.props;
+
     return (
-      <ul className="dropdown-menu">
-        {this.props.list.map((item: ITypeaheadItem, index: number) => {
-          return (
-            <TypeaheadListItem onSelect={this.props.onSelect} item={item} />
-          );
+      <ul className='typeahead__list'>
+        {list.map((item: Item, index: number) => {
+          return <ListItem key={index} onSelect={onSelect} item={item} itemRender={itemRender} />;
         })}
       </ul>
     );

@@ -32,9 +32,7 @@ export class TypeaheadQuery extends React.Component<ITypeaheadQueryProps, ITypea
 
   public render(): React.ReactElement<{}> {
     return (
-      <div>
-        <input type='text' value={this.state.query} onChange={this.handleKeyPress} />
-      </div>
+      <input className='typeahead__query' type='text' value={this.state.query} onChange={this.handleKeyPress} />
     );
   }
 }

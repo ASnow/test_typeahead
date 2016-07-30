@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 
-import { Typeahead } from './typeahead';
+import { Autocomplete } from './autocomplete';
 import 'isomorphic-fetch';
 
 export class App extends React.Component<void, void> {
@@ -17,23 +17,10 @@ export class App extends React.Component<void, void> {
   }
 
   public render(): React.ReactElement<{}> {
-    let items: any[] = [
-      {label: 'test1', value: '123'},
-      {label: 'test2', value: '123'},
-      {label: 'test3', value: '123'},
-      {label: 'test4', value: '123'},
-      {label: 'test5', value: '123'},
-      {label: 'test6', value: '123'},
-    ];
-
     return (<div>
         <div>
-          Поиск по заданному массиву:
-          <Typeahead source={items} minLength={2} />
-        </div>
-        <div>
-          Поиск по запросу:
-          <Typeahead source={this.asyncSearch} minLength={2} />
+          Поиск улиц по запросу:
+          <Autocomplete fetch={this.asyncSearch} valueLink={(item: any) => console.log('Change:', item)} itemRender={(item: any) => <a>{item.label}</a>} />
         </div>
       </div>
     );

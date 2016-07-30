@@ -1,0 +1,67 @@
+@input_color: #fafafa;
+@list_color: white;
+@list_item_color: white;
+@radius: 0.4em;
+@focus_color: #0097cf;
+
+.border-radius (@radius: 5px) {
+  border-radius:         @radius;
+  background-clip:         padding-box;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  font-family:  Arial;
+  font-size: 1.2em;
+}
+.typeahead {
+  margin: 10px;
+  display: block;
+  position: relative;
+
+  &_open {
+    > .typeahead__list {
+      display: block;
+    }
+  }
+
+  &__query {
+    border: 2px solid darken(@input_color,  20%);
+    .border-radius(@radius);
+    background: linear-gradient(@input_color, darken(@input_color,  5%));
+    padding: @radius @radius*2;
+    outline: none;
+    &:focus{
+      border-color: @focus_color;
+    }
+  }
+
+  &__list {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 160px;
+    max-height: 300px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    border: 1px solid darken(@list_color,  20%);
+    background-color: @list_color;
+    .border-radius(@radius);
+    overflow-y: scroll;
+  }
+
+  &__list-item {
+    background-color: @list_item_color;
+    padding: 0.4em;
+    cursor: pointer;
+    &:hover {
+      background-color: @focus_color;
+    }
+  }
+}
