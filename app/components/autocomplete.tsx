@@ -5,15 +5,20 @@ import { Typeahead } from './typeahead';
 import { IItemRenderable } from './typeahead.model';
 
 
-interface Item {
+interface IItem {
   id?: number;
   name?: string;
   label?: string;
 }
+interface IReactLink {
+  value: any;
+  requestChange: (item: any) => void;
+}
 
-interface IAutocompleteProps extends IItemRenderable<Item> {
-  fetch?: (query: string) => Promise<Item[]>;
-  valueLink?: (item: Item) => void;
+
+interface IAutocompleteProps extends IItemRenderable<IItem> {
+  fetch?: (query: string) => Promise<IItem[]>;
+  valueLink?: IReactLink;
 }
 
 export class Autocomplete extends React.Component<IAutocompleteProps, {}> {
@@ -22,7 +27,7 @@ export class Autocomplete extends React.Component<IAutocompleteProps, {}> {
 
     return (
       <div>
-        <Typeahead source={fetch} onChange={valueLink} labelMap={(item: Item) => item.label || item.name} itemRender={itemRender} minLength={2} />
+        <Typeahead source={fetch} onChange={valueLink.requestChange}  value={valueLink.value} labelMap={(item: IItem) => item.label || item.name} itemRender={itemRender} minLength={2} />
       </div>
     );
   }

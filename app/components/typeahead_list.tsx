@@ -33,6 +33,16 @@ class TypeaheadListItem<Item> extends React.Component<ITypeaheadListItemProps<It
 }
 
 export class TypeaheadList<Item> extends React.Component<ITypeaheadListProps<Item>, void> {
+  protected closeHandler = () => this.props.onSelect(null);
+
+  public componentDidMount(): void {
+    document.addEventListener('click', this.closeHandler, false);
+  }
+
+  public componentWillUnmount(): void {
+    document.removeEventListener('click', this.closeHandler, false);
+  }
+
   public render(): React.ReactElement<any> {
     const ListItem: new () => TypeaheadListItem<Item> = TypeaheadListItem as any;
     const { list, onSelect, itemRender }: any = this.props;
